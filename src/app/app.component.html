@@ -1,0 +1,241 @@
+<div class="card">
+  <p-table
+    [value]="customers"
+    rowGroupMode="rowspan"
+    groupRowsBy="category.id"
+    sortField="category.id"
+    sortMode="single"
+    #dt
+    editMode="row"
+    dataKey="category.id"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:3rem">#</th>
+        <th style="width:3rem"></th>
+        <th>Category</th>
+        <th>Sub Catgeory</th>
+
+        <th style="width:8em"></th>
+      </tr>
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-customer
+      let-rowIndex="rowIndex"
+      let-rowgroup="rowgroup"
+      let-rowspan="rowspan"
+      let-editing="editing"
+      let-ri="rowIndex"
+    >
+      <tr [pEditableRow]="customer">
+        <td>{{ rowIndex }}</td>
+        <td style="text-align:center" *ngIf="rowgroup" [attr.rowspan]="rowspan">
+          <button
+            *ngIf="editing"
+            pButton
+            type="button"
+            pSaveEditableRow
+            icon="pi pi-check"
+            class="ui-button-success"
+            style="margin-right: .5em"
+            (click)="onRowEditSave(customer, dt)"
+          ></button>
+        </td>
+        <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input
+                pInputText
+                type="text"
+                [(ngModel)]="categoryvalue"
+                required
+              />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ categoryvalue }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input
+                pInputText
+                type="text"
+                [(ngModel)]="customer.sub_category_value"
+                required
+              />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ customer.sub_category_value }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <td style="text-align:center">
+          <button
+            *ngIf="!editing"
+            pButton
+            type="button"
+            pInitEditableRow
+            icon="pi pi-pencil"
+            class="ui-button-info"
+            (click)="onRowEditInit(customer)"
+          ></button>
+          <button
+            *ngIf="editing"
+            pButton
+            type="button"
+            pSaveEditableRow
+            icon="pi pi-check"
+            class="ui-button-success"
+            style="margin-right: .5em"
+            (click)="onRowEditSave(customer, dt)"
+          ></button>
+          <button
+            *ngIf="editing"
+            pButton
+            type="button"
+            pCancelEditableRow
+            icon="pi pi-times"
+            class="ui-button-danger"
+            (click)="onRowEditCancel(customer, ri, dt)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<button
+  pButton
+  type="button"
+  icon="pi pi-plus"
+  class="ui-button-info"
+  [label]="'Add'"
+  pAddRow
+  [table]="dt"
+  [newRow]="newRow()"
+></button>
+<div>
+  <pre><p>{{ jsnvalue | json }}</p></pre>
+</div>
+<!-- -->
+<p-table
+  [value]="customers1"
+  rowGroupMode="rowspan"
+  groupRowsBy="category.id"
+  sortField="category.id"
+  sortMode="single"
+  #dt
+  editMode="row"
+  dataKey="sub_category_id"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width:3rem">#</th>
+      <th style="width:3rem"></th>
+      <th>Category</th>
+      <th>Sub Catgeory</th>
+
+      <th style="width:8em"></th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-customer
+    let-rowIndex="rowIndex"
+    let-rowgroup="rowgroup"
+    let-rowspan="rowspan"
+    let-editing="editing"
+    let-ri="rowIndex"
+  >
+    <tr [pEditableRow]="customer">
+      <td>{{ rowIndex }}</td>
+      <td style="text-align:center" *ngIf="rowgroup" [attr.rowspan]="rowspan">
+        <button
+          *ngIf="editing"
+          pButton
+          type="button"
+          pSaveEditableRow
+          icon="pi pi-check"
+          class="ui-button-success"
+          style="margin-right: .5em"
+          (click)="onRowEditSave1(customer, dt)"
+        ></button>
+        <button
+          *ngIf="!editing"
+          pButton
+          type="button"
+          pInitEditableRow
+          icon="pi pi-pencil"
+          class="ui-button-info"
+          (click)="onRowEditInitCategory(customer)"
+        ></button>
+      </td>
+      <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              pInputText
+              type="text"
+              [disabled]="editSubCategory"
+              [(ngModel)]="customer.category.value"
+              required
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ customer.category.value }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input
+              pInputText
+              type="text"
+              [disabled]="editCategory"
+              [(ngModel)]="customer.sub_category_value"
+              required
+            />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ customer.sub_category_value }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+
+      <td style="text-align:center">
+        <button
+          *ngIf="!editing"
+          pButton
+          type="button"
+          pInitEditableRow
+          icon="pi pi-pencil"
+          class="ui-button-info"
+          (click)="onRowEditInit(customer)"
+        ></button>
+        <button
+          *ngIf="editing"
+          pButton
+          type="button"
+          pSaveEditableRow
+          icon="pi pi-check"
+          class="ui-button-success"
+          style="margin-right: .5em"
+          (click)="onRowEditSave1(customer, dt)"
+        ></button>
+        <button
+          *ngIf="editing"
+          pButton
+          type="button"
+          pCancelEditableRow
+          icon="pi pi-times"
+          class="ui-button-danger"
+          (click)="onRowEditCancel(customer, ri, dt)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
