@@ -45,12 +45,12 @@
         <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <input
-                pInputText
-                type="text"
+              <p-dropdown
+                [options]="cities"
                 [(ngModel)]="categoryvalue"
-                required
-              />
+                editable="true"
+                optionLabel="name"
+              ></p-dropdown>
             </ng-template>
             <ng-template pTemplate="output">
               {{ categoryvalue }}

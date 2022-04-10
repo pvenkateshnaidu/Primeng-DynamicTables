@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Category, SubCategory } from './customer';
 import { CustomerService } from './customerservice';
 import { Table } from 'primeng/table';
+interface City {
+  name: string;
+  id: string;
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,13 +13,23 @@ import { Table } from 'primeng/table';
 })
 export class AppComponent {
   customers: SubCategory[];
+  cities: City[];
+  selectedCity2: City;
   customers1: SubCategory[] = [];
   clonedCars: { [s: string]: SubCategory } = {};
   jsnvalue: any;
   editCategory: boolean = false;
   editSubCategory: boolean = false;
-  categoryvalue: string = '';
-  constructor(private customerService: CustomerService) {}
+  categoryvalue: City;
+  constructor(private customerService: CustomerService) {
+    this.cities = [
+      { name: 'New York', id: 'NY' },
+      { name: 'Rome', id: 'RM' },
+      { name: 'London', id: 'LDN' },
+      { name: 'Istanbul', id: 'IST' },
+      { name: 'Paris', id: 'PRS' },
+    ];
+  }
 
   ngOnInit() {
     this.customerService.getCustomersMedium().then((data) => {
@@ -47,10 +61,18 @@ export class AppComponent {
     this.editSubCategory = false;
   }
   onRowEditSave(car: SubCategory, dt: Table) {
+    console.log(this.categoryvalue);
     this.jsnvalue = dt.value;
-    const cat = this.categoryvalue;
+    const cat: any = this.categoryvalue;
     this.jsnvalue = this.jsnvalue.filter(function (sub) {
-      return (sub.category.value = cat);
+      if (cat.code) {
+        sub.category.value = cat.name;
+        sub.category.id = cat.is;
+        return true;
+      } else {
+        sub.category.value = cat;
+        return true;
+      }
     });
     this.customers1 = this.jsnvalue;
     dt.value = [];
